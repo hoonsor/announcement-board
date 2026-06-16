@@ -1,11 +1,12 @@
 import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
+import { redirect } from "next/navigation"
 import CreateAnnouncementForm from "@/components/CreateAnnouncementForm"
 import { createAnnouncement } from "@/actions/announcement"
 
 export default async function CreateAnnouncementPage() {
   const session = await auth()
-  if (!session) return null
+  if (!session) return redirect("/login")
 
   const allTags = await prisma.tag.findMany({ orderBy: { name: 'asc' } })
 

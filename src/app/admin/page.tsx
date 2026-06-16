@@ -2,11 +2,12 @@ import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
 import Link from "next/link"
 import { Trash2, Edit } from "lucide-react"
-import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
+import { deleteAnnouncement } from "@/actions/announcement"
 
 export default async function AdminDashboard() {
   const session = await auth()
-  if (!session) return null
+  if (!session) return redirect("/login")
 
   const announcements = await prisma.announcement.findMany({
     where: session.user.role === 'ADMIN' ? {} : { authorId: session.user.id },
@@ -54,12 +55,7 @@ export default async function AdminDashboard() {
                       <Link href={`/edit/${ann.id}`} className="inline-block text-indigo-500 hover:text-indigo-700 p-2 rounded-lg hover:bg-indigo-50 transition-colors">
                         <Edit className="w-4 h-4" />
                       </Link>
-                      <form action={async () => {
-                        "use server"
-                        await prisma.announcement.delete({ where: { id: ann.id } })
-                        revalidatePath("/")
-                        revalidatePath("/admin")
-                      }} className="inline-block">
+                      <form action={deleteAnnouncement.bind(null, ann.id, null)} className="inline-block">
                         <button type="submit" className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>

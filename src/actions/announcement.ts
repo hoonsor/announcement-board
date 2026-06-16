@@ -112,7 +112,7 @@ export async function updateAnnouncement(id: string, formData: FormData) {
   redirect(`/announcement/${id}`)
 }
 
-export async function deleteAnnouncement(id: string) {
+export async function deleteAnnouncement(id: string, redirectTo: string | null = "/") {
   const session = await auth()
   if (!session?.user) throw new Error("Unauthorized")
 
@@ -123,5 +123,9 @@ export async function deleteAnnouncement(id: string) {
 
   await prisma.announcement.delete({ where: { id } })
   revalidatePath("/")
-  redirect("/")
+  revalidatePath("/admin")
+  
+  if (redirectTo) {
+    redirect(redirectTo)
+  }
 }
