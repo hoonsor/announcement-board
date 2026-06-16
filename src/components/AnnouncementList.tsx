@@ -74,38 +74,52 @@ export default function AnnouncementList({
     <div className="space-y-6">
       {/* Filter Section */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
-          <TagIcon className="w-5 h-5 mr-2 text-indigo-500" />
-          快速標籤篩選
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold flex items-center text-gray-800">
+            <TagIcon className="w-5 h-5 mr-2 text-indigo-500" />
+            快速標籤篩選
+          </h3>
+          {conditions.length > 0 && (
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setConditions([])} 
+              className="text-xs font-semibold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-xl border border-red-100 transition-colors cursor-pointer select-none"
+            >
+              清除所有篩選 ({conditions.length})
+            </motion.button>
+          )}
+        </div>
         <div className="flex flex-wrap gap-3">
           {allTags.map(tag => {
             const state = getTagState(tag.id)
             return (
-              <button
+              <motion.button
                 key={tag.id}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   if (state === 'NONE') toggleCondition(tag.id, 'AND')
                   else if (state === 'AND') toggleCondition(tag.id, 'OR')
                   else if (state === 'OR') toggleCondition(tag.id, 'NOT')
                   else toggleCondition(tag.id, 'NOT') // NOT -> NONE (toggle itself to remove)
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border flex items-center space-x-1 focus:outline-none
-                  ${state === 'NONE' ? 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100' : ''}
-                  ${state === 'AND' ? 'bg-green-100 text-green-700 border-green-200 ring-2 ring-green-400' : ''}
-                  ${state === 'OR' ? 'bg-blue-100 text-blue-700 border-blue-200 ring-2 ring-blue-400' : ''}
-                  ${state === 'NOT' ? 'bg-red-100 text-red-700 border-red-200 ring-2 ring-red-400' : ''}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border flex items-center space-x-1 focus:outline-none cursor-pointer select-none
+                  ${state === 'NONE' ? 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300' : ''}
+                  ${state === 'AND' ? 'bg-green-50 text-green-700 border-green-300 ring-2 ring-green-400 font-semibold' : ''}
+                  ${state === 'OR' ? 'bg-blue-50 text-blue-700 border-blue-300 ring-2 ring-blue-400 font-semibold' : ''}
+                  ${state === 'NOT' ? 'bg-red-50 text-red-700 border-red-300 ring-2 ring-red-400 font-semibold' : ''}
                 `}
               >
                 <span>{tag.name}</span>
                 {state !== 'NONE' && (
-                  <span className="text-[10px] uppercase font-bold ml-1 opacity-80 bg-white/50 px-1.5 rounded">{state}</span>
+                  <span className="text-[10px] uppercase font-bold ml-1 opacity-90 bg-white/70 px-1.5 py-0.5 rounded">{state}</span>
                 )}
-              </button>
+              </motion.button>
             )
           })}
         </div>
-        <p className="text-xs text-gray-400 mt-4">提示: 點擊標籤依序切換條件 ( AND → OR → NOT → 取消 )</p>
+        <p className="text-xs text-gray-400 mt-4">💡 提示: 點擊標籤依序切換過濾條件 ( AND → OR → NOT → 取消 )</p>
       </div>
 
       {/* List Section */}

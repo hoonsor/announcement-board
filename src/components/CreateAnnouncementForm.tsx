@@ -15,6 +15,8 @@ export default function CreateAnnouncementForm({
   const [content, setContent] = useState(initialData?.content || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [deletedAttachmentIds, setDeletedAttachmentIds] = useState<string[]>([])
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(initialData?.tags?.map((t: any) => t.id) || [])
+  const [tagSearch, setTagSearch] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -26,6 +28,11 @@ export default function CreateAnnouncementForm({
     // 附加上標記為刪除的附件 ID
     deletedAttachmentIds.forEach(id => {
       formData.append("deleteAttachments", id)
+    })
+
+    // 附加上選中的標籤 ID
+    selectedTagIds.forEach(id => {
+      formData.append("tags", id)
     })
 
     try {
@@ -50,12 +57,45 @@ export default function CreateAnnouncementForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">標籤 (可多選)</label>
-        <select name="tags" multiple defaultValue={initialData?.tags?.map((t:any)=>t.id)} className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50" size={5}>
-          {allTags.map(t => (
-            <option key={t.id} value={t.id} className="p-2 hover:bg-indigo-50 rounded cursor-pointer">{t.name}</option>
-          ))}
-        </select>
-        <p className="text-xs text-gray-500 mt-1">💡 按住 Ctrl (Windows) 或 Cmd (Mac) 可以選取多個標籤。</p>
+        <div className="border border-gray-300 rounded-xl p-4 bg-gray-50/50 space-y-3">
+          <input 
+            type="text" 
+            placeholder="搜尋篩選標籤..." 
+            value={tagSearch} 
+            onChange={(e) => setTagSearch(e.target.value)} 
+            className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 bg-white outline-none"
+          />
+          <div className="flex flex-wrap gap-2 max-h-[160px] overflow-y-auto pr-1">
+            {allTags.filter(t => t.name.toLowerCase().includes(tagSearch.toLowerCase())).map(t => {
+              const isSelected = selectedTagIds.includes(t.id)
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedTagIds(prev => 
+                      prev.includes(t.id) 
+                        ? prev.filter(id => id !== t.id) 
+                        : [...prev, t.id]
+                    )
+                  }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 flex items-center space-x-1 cursor-pointer select-none
+                    ${isSelected 
+                      ? 'bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-100' 
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300'
+                    }
+                  `}
+                >
+                  {isSelected && <span className="mr-0.5">✓</span>}
+                  <span>#{t.name}</span>
+                </button>
+              )
+            })}
+            {allTags.filter(t => t.name.toLowerCase().includes(tagSearch.toLowerCase())).length === 0 && (
+              <p className="text-xs text-gray-400 py-2">找不到符合的標籤</p>
+            )}
+          </div>
+        </div>
       </div>
 
       <div>
