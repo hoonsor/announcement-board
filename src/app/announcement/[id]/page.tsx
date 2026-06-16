@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import DOMPurify from 'isomorphic-dompurify'
 import { Calendar, Paperclip, Download, Tag as TagIcon, ArrowLeft, Edit, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { deleteAnnouncement } from "@/actions/announcement"
 
 export default async function AnnouncementPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -34,11 +35,7 @@ export default async function AnnouncementPage({ params }: { params: Promise<{ i
               <Link href={`/edit/${ann.id}`} className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 transition-colors">
                 <Edit className="w-4 h-4 mr-1" /> 編輯公告
               </Link>
-              <form action={async () => {
-                "use server"
-                const { deleteAnnouncement } = await import("@/actions/announcement")
-                await deleteAnnouncement(ann.id)
-              }}>
+              <form action={deleteAnnouncement.bind(null, ann.id, "/")}>
                 <button type="submit" className="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-800 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 transition-colors">
                   <Trash2 className="w-4 h-4 mr-1" /> 刪除
                 </button>

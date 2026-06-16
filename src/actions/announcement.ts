@@ -71,6 +71,7 @@ export async function updateAnnouncement(id: string, formData: FormData) {
   const content = formData.get("content") as string
   const tagIds = formData.getAll("tags") as string[]
   const files = formData.getAll("files") as File[]
+  const deleteAttachments = formData.getAll("deleteAttachments") as string[]
 
   const attachments = []
   if (files.length > 0) {
@@ -92,6 +93,16 @@ export async function updateAnnouncement(id: string, formData: FormData) {
     }
   }
 
+  // Delete requested attachments
+  if (deleteAttachments.length > 0) {
+    await prisma.attachment.deleteMany({
+      where: {
+        id: { in: deleteAttachments },
+        announcementId: id
+      }
+    })
+  }
+
   await prisma.announcement.update({
     where: { id },
     data: {
@@ -101,9 +112,9 @@ export async function updateAnnouncement(id: string, formData: FormData) {
         set: [],
         connect: tagIds.map(tId => ({ id: tId }))
       },
-      ...(attachments.length > 0 ? {
-        attachments: { create: attachments }
-      } : {})
+      attachments: {
+        create: attachments
+      }
     }
   })
 
@@ -112,7 +123,7 @@ export async function updateAnnouncement(id: string, formData: FormData) {
   redirect(`/announcement/${id}`)
 }
 
-export async function deleteAnnouncement(id: string, redirectTo: string | null = "/") {
+export async function deleteAnnouncement(id: string, redirectTo: string | null = "/", formData?: FormData) {
   const session = await auth()
   if (!session?.user) throw new Error("Unauthorized")
 

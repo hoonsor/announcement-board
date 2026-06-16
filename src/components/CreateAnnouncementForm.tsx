@@ -14,6 +14,7 @@ export default function CreateAnnouncementForm({
 }) {
   const [content, setContent] = useState(initialData?.content || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [deletedAttachmentIds, setDeletedAttachmentIds] = useState<string[]>([])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,6 +22,11 @@ export default function CreateAnnouncementForm({
     
     const formData = new FormData(e.currentTarget)
     formData.set("content", content) // override content with rich text
+
+    // 附加上標記為刪除的附件 ID
+    deletedAttachmentIds.forEach(id => {
+      formData.append("deleteAttachments", id)
+    })
 
     try {
       await action(formData)
@@ -54,9 +60,38 @@ export default function CreateAnnouncementForm({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">{initialData ? "附加新檔案 (選填)" : "附件上傳"}</label>
-        <input type="file" name="files" multiple className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50" />
+        <input type="file" name="files" multiple className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50 mb-2" />
         {initialData?.attachments?.length > 0 && (
-          <p className="text-sm text-indigo-600 mt-2 font-medium">已存在的檔案：{initialData.attachments.map((a:any) => a.filename).join(', ')}</p>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-600 font-medium">現有附件檔案 (點擊標記為刪除)：</p>
+            <div className="flex flex-wrap gap-2">
+              {initialData.attachments.map((att: any) => {
+                const isDeleted = deletedAttachmentIds.includes(att.id)
+                return (
+                  <div 
+                    key={att.id} 
+                    className={`flex items-center space-x-2 text-xs border rounded-lg px-3 py-1.5 transition-all select-none
+                      ${isDeleted 
+                        ? 'bg-red-50 text-red-400 border-red-200 line-through' 
+                        : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-red-50 hover:text-red-600 hover:border-red-300 cursor-pointer'
+                      }
+                    `}
+                    onClick={() => {
+                      setDeletedAttachmentIds(prev => 
+                        prev.includes(att.id) 
+                          ? prev.filter(id => id !== att.id) 
+                          : [...prev, att.id]
+                      )
+                    }}
+                    title={isDeleted ? "點擊復原" : "點擊標記為刪除"}
+                  >
+                    <span>{att.filename}</span>
+                    <span>{isDeleted ? "↩️" : "🗑️"}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         )}
       </div>
 
