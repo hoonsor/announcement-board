@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  username      String         @unique
+  password      String         // Hashed password
+  name          String         // e.g. "編組A", "管理員"
+  role          Role           @default(GROUP)
+  announcements Announcement[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+enum Role {
+  ADMIN
+  GROUP
+}
+
+model Announcement {
+  id          String       @id @default(cuid())
+  title       String
+  content     String
+  authorId    String
+  author      User         @relation(fields: [authorId], references: [id])
+  tags        Tag[]
+  attachments Attachment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Tag {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  announcements Announcement[]
+}
+
+model Attachment {
+  id             String       @id @default(cuid())
+  filename       String
+  url            String
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+}
