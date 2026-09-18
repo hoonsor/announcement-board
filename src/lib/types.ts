@@ -29,7 +29,7 @@ export interface ChecklistPageData {
 export interface MapHotspot {
   id: string;
   name: string;
-  /** position in the map's SVG coordinate space (viewBox 0 0 1000 1300) */
+  /** position in the map's SVG coordinate space (viewBox 0 0 1629 2090，對應「AED 分配圖」原始像素座標) */
   x: number;
   y: number;
   zoneLabel: string;
