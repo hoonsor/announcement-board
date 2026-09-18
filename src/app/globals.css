@@ -1,55 +1,192 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-@theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+/*
+ * 佈景主題切換使用 <html data-theme="light|dark"> 屬性控制（見 ThemeToggle 元件），
+ * 而非單純跟隨系統設定，因此將 Tailwind 的 dark: 變體改為比對 data-theme 屬性。
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --background: #f7f6f2;
+  --surface: #ffffff;
+  --surface-muted: #f1efe8;
+  --foreground: #1b2430;
+  --foreground-muted: #5b6472;
+
+  --color-primary-50: #eef4f6;
+  --color-primary-100: #d6e5ea;
+  --color-primary-200: #adc9d3;
+  --color-primary-300: #7ea9b8;
+  --color-primary-400: #4d8398;
+  --color-primary-500: #2f6577;
+  --color-primary-600: #204d5c;
+  --color-primary-700: #163a47;
+  --color-primary-800: #102a34;
+  --color-primary-900: #0b1e26;
+
+  --color-accent-50: #fdf6e8;
+  --color-accent-100: #fae9c2;
+  --color-accent-200: #f5d68e;
+  --color-accent-300: #edbb58;
+  --color-accent-400: #dfa136;
+  --color-accent-500: #c6862a;
+  --color-accent-600: #a06a20;
+  --color-accent-700: #7a501a;
+
+  --color-danger-400: #e2665f;
+  --color-danger-500: #cf4038;
+  --color-danger-600: #ac2f28;
+
+  --shadow-soft: 0 1px 2px rgba(16, 30, 40, 0.04), 0 12px 28px -12px rgba(16, 30, 40, 0.16);
+  --shadow-soft-lg: 0 4px 12px rgba(16, 30, 40, 0.06), 0 24px 48px -16px rgba(16, 30, 40, 0.22);
+
+  --header-height: 4.25rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+
+  --color-accent-50: var(--color-accent-50);
+  --color-accent-100: var(--color-accent-100);
+  --color-accent-200: var(--color-accent-200);
+  --color-accent-300: var(--color-accent-300);
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+  --color-accent-700: var(--color-accent-700);
+
+  --color-danger-400: var(--color-danger-400);
+  --color-danger-500: var(--color-danger-500);
+  --color-danger-600: var(--color-danger-600);
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang TC",
+    "Microsoft JhengHei", "Noto Sans TC", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-soft-lg: var(--shadow-soft-lg);
+}
+
+/* 尚未套用 JS 主題設定（例如關閉 JavaScript）時，回退跟隨系統設定 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #0f1720;
+    --surface: #16212c;
+    --surface-muted: #1c2a36;
+    --foreground: #eef2f5;
+    --foreground-muted: #a6b3bf;
+  }
+}
+
+/* 使用者手動選擇「深色」主題，或「跟隨系統」且系統為深色時，由 ThemeToggle 設定此屬性 */
+:root[data-theme="dark"] {
+  --background: #0f1720;
+  --surface: #16212c;
+  --surface-muted: #1c2a36;
+  --foreground: #eef2f5;
+  --foreground-muted: #a6b3bf;
+}
+
+/* 使用者手動選擇「淺色」主題時，即使系統為深色也強制維持淺色數值 */
+:root[data-theme="light"] {
+  --background: #f7f6f2;
+  --surface: #ffffff;
+  --surface-muted: #f1efe8;
+  --foreground: #1b2430;
+  --foreground-muted: #5b6472;
+}
+
+* {
+  border-color: rgba(16, 30, 40, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #f9fafb;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease-out, color 0.3s ease-out;
 }
 
-/* 全域平滑過渡效果，提升點選與 hover 的視覺層次 */
-a, button, input, select, textarea {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+::selection {
+  background: var(--color-accent-200);
+  color: var(--color-primary-800);
 }
 
-/* 優雅的 Scrollbar */
+/* subtle custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #cbd5e1;
+  background: var(--color-primary-200);
+  border-radius: 999px;
 }
 
-/* Tiptap styles override for lists inside prose to ensure they display properly */
-.ProseMirror ul {
-  list-style-type: disc;
-  padding-left: 1.5rem;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
-.ProseMirror ol {
-  list-style-type: decimal;
-  padding-left: 1.5rem;
+
+/* ---------- Print styles ---------- */
+@media print {
+  @page {
+    margin: 14mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-only-inline {
+    display: inline-flex !important;
+  }
+
+  .print-area {
+    color: #111 !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
 }
-.ProseMirror a {
-  color: #4f46e5;
-  text-decoration: underline;
-}
-.ProseMirror p.is-editor-empty:first-child::before {
-  color: #adb5bd;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
+
+.print-only,
+.print-only-inline {
+  display: none;
 }
