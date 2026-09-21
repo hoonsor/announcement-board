@@ -32,11 +32,11 @@ export interface MapHotspot {
   /** position in the map's SVG coordinate space (viewBox 0 0 1629 2090，對應「AED 分配圖」原始像素座標) */
   x: number;
   y: number;
-  zoneLabel: string;
+  zoneLabel?: string;
   schedule: string;
-  method: string;
-  owner: string;
-  contactPhone: string;
+  method?: string;
+  owner?: string;
+  contactPhone?: string;
   notes: string[];
   accent: "teal" | "amber" | "rose";
 }

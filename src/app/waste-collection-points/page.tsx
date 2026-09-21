@@ -4,6 +4,7 @@ import CampusMapPhoto from "@/components/CampusMapPhoto";
 import ClientHotspotList from "@/components/HotspotList";
 import { mapHotspots } from "@/data/mapHotspots";
 import { wastePageContent } from "@/data/wastePage";
+import RichText from "@/lib/richText";
 
 export const metadata: Metadata = {
   title: "競賽期間清運點",
@@ -49,7 +50,7 @@ export default function Page() {
             {wastePageContent.title}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-primary-100 sm:text-base">
-            {wastePageContent.subtitle}
+            <RichText text={wastePageContent.subtitle} />
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -80,14 +81,14 @@ export default function Page() {
             {wastePageContent.list.title}
           </h2>
           <p className="mt-1 text-sm text-foreground-muted">
-            {wastePageContent.list.description}
+            <RichText text={wastePageContent.list.description} />
           </p>
 
           <ClientHotspotList />
         </div>
 
         <p className="mt-6 text-center text-xs text-foreground-muted">
-          {wastePageContent.footnote}
+          <RichText text={wastePageContent.footnote} />
         </p>
       </section>
     </div>

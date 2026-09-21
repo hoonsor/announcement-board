@@ -32,10 +32,12 @@ export default function HotspotList() {
                 <span className="block truncate text-sm font-semibold text-foreground">
                   {h.name}
                 </span>
-                <span className="mt-0.5 flex items-center gap-1 truncate text-xs text-foreground-muted">
-                  <MapPin className="h-3 w-3 shrink-0" />
-                  {h.zoneLabel}
-                </span>
+                {h.zoneLabel && (
+                  <span className="mt-0.5 flex items-center gap-1 truncate text-xs text-foreground-muted">
+                    <MapPin className="h-3 w-3 shrink-0" />
+                    {h.zoneLabel}
+                  </span>
+                )}
               </span>
               <ChevronRight className="h-4 w-4 shrink-0 text-foreground-muted transition-transform group-hover:translate-x-0.5 group-hover:text-primary-500" />
             </button>

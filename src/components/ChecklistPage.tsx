@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import type { ChecklistPageData } from "@/lib/types";
 import { useLocalStorageJSON } from "@/lib/useLocalStorageJSON";
+import { DEPLOY_TIMESTAMP } from "@/lib/deployTime";
+import RichText from "@/lib/richText";
 
 export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
   const allIds = useMemo(
@@ -62,7 +64,7 @@ export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
                 {data.title}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-primary-100 sm:text-base">
-                {data.subtitle}
+                <RichText text={data.subtitle} />
               </p>
             </div>
 
@@ -78,7 +80,7 @@ export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-primary-100">
-            <span>最後更新：{data.updatedAt}</span>
+            <span>最後更新：{DEPLOY_TIMESTAMP}</span>
             <span className="inline-flex items-center gap-1.5">
               <User className="h-4 w-4" />
               {data.contact.unit}
@@ -106,7 +108,7 @@ export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
         <p className="mt-1 text-sm">{data.subtitle}</p>
         <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs">
           <span>公告編號：{data.badge}</span>
-          <span>最後更新：{data.updatedAt}</span>
+          <span>最後更新：{DEPLOY_TIMESTAMP}</span>
           <span>
             承辦：{data.contact.unit}
             {data.contact.person ? `／${data.contact.person}` : ""}
@@ -163,7 +165,7 @@ export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
               </h2>
               {section.description && (
                 <p className="mt-1 text-sm text-foreground-muted">
-                  {section.description}
+                  <RichText text={section.description} />
                 </p>
               )}
 
@@ -215,10 +217,10 @@ export default function ChecklistPage({ data }: { data: ChecklistPageData }) {
                               : "text-foreground print:text-black"
                           }`}
                         >
-                          {item.text}
+                          <RichText text={item.text} />
                           {item.note && (
                             <span className="mt-0.5 block text-xs text-foreground-muted">
-                              {item.note}
+                              <RichText text={item.note} />
                             </span>
                           )}
                         </span>

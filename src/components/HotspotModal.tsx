@@ -12,6 +12,17 @@ import {
   X,
 } from "lucide-react";
 import type { MapHotspot } from "@/lib/types";
+import RichText from "@/lib/richText";
+
+/** 各清運點的現場實拍照片（置於 public/images/hotspots/，檔名對應清運點代號） */
+const HOTSPOT_PHOTOS: Record<string, string> = {
+  "pe-flowerbed": "/images/hotspots/pe-flowerbed.png",
+  "courtyard-pond-1f": "/images/hotspots/courtyard-pond-1f.jpg",
+  "courtyard-pond-3f": "/images/hotspots/courtyard-pond-3f.png",
+  "leqiun-hall": "/images/hotspots/leqiun-hall.jpg",
+  "gengdu-hall": "/images/hotspots/gengdu-hall.jpg",
+  "lexue-hall": "/images/hotspots/lexue-hall.png",
+};
 
 const ACCENT: Record<
   MapHotspot["accent"],
@@ -159,7 +170,20 @@ export default function HotspotModal({
             className="relative flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl bg-surface shadow-soft-lg"
           >
             <div className="relative h-44 shrink-0 sm:h-52">
-              <HotspotIllustration hotspot={hotspot} />
+              {HOTSPOT_PHOTOS[hotspot.id] ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={HOTSPOT_PHOTOS[hotspot.id]}
+                  alt={`${hotspot.name}現場實拍照片`}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <HotspotIllustration hotspot={hotspot} />
+              )}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/0"
+              />
               <button
                 type="button"
                 onClick={onClose}
@@ -168,11 +192,13 @@ export default function HotspotModal({
               >
                 <X className="h-5 w-5" />
               </button>
-              <div className="absolute bottom-3 left-4 right-4">
-                <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-primary-800 shadow-soft">
-                  {hotspot.zoneLabel}
-                </span>
-              </div>
+              {hotspot.zoneLabel && (
+                <div className="absolute bottom-3 left-4 right-4">
+                  <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-primary-800 shadow-soft">
+                    {hotspot.zoneLabel}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="overflow-y-auto p-5 sm:p-6">
@@ -188,27 +214,33 @@ export default function HotspotModal({
                     <dd className="text-foreground-muted">{hotspot.schedule}</dd>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <ClipboardCheck className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
-                  <div>
-                    <dt className="font-semibold text-foreground">處理方式</dt>
-                    <dd className="text-foreground-muted">{hotspot.method}</dd>
+                {hotspot.method && (
+                  <div className="flex items-start gap-3">
+                    <ClipboardCheck className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
+                    <div>
+                      <dt className="font-semibold text-foreground">處理方式</dt>
+                      <dd className="text-foreground-muted">{hotspot.method}</dd>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <UserRound className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
-                  <div>
-                    <dt className="font-semibold text-foreground">負責單位</dt>
-                    <dd className="text-foreground-muted">{hotspot.owner}</dd>
+                )}
+                {hotspot.owner && (
+                  <div className="flex items-start gap-3">
+                    <UserRound className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
+                    <div>
+                      <dt className="font-semibold text-foreground">負責單位</dt>
+                      <dd className="text-foreground-muted">{hotspot.owner}</dd>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
-                  <div>
-                    <dt className="font-semibold text-foreground">聯絡電話</dt>
-                    <dd className="text-foreground-muted">{hotspot.contactPhone}</dd>
+                )}
+                {hotspot.contactPhone && (
+                  <div className="flex items-start gap-3">
+                    <Phone className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
+                    <div>
+                      <dt className="font-semibold text-foreground">聯絡電話</dt>
+                      <dd className="text-foreground-muted">{hotspot.contactPhone}</dd>
+                    </div>
                   </div>
-                </div>
+                )}
               </dl>
 
               <div className="mt-5 rounded-xl bg-surface-muted p-4">
@@ -223,7 +255,7 @@ export default function HotspotModal({
                       className="flex items-start gap-2 text-xs leading-relaxed text-foreground-muted sm:text-sm"
                     >
                       <Trash2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-400" />
-                      {n}
+                      <RichText text={n} />
                     </li>
                   ))}
                 </ul>
