@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CalendarClock, MapPinned, Recycle, Truck } from "lucide-react";
-import CampusMap from "@/components/CampusMap";
+import CampusMapPhoto from "@/components/CampusMapPhoto";
 import ClientHotspotList from "@/components/HotspotList";
 import { mapHotspots } from "@/data/mapHotspots";
 import { wastePageContent } from "@/data/wastePage";
@@ -72,7 +72,7 @@ export default function Page() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <CampusMap />
+        <CampusMapPhoto />
 
         <div className="mt-10 rounded-2xl border border-primary-900/8 bg-surface p-5 shadow-soft sm:p-7">
           <h2 className="flex items-center gap-2 text-base font-bold text-primary-800 sm:text-lg dark:text-primary-100">
