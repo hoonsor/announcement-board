@@ -169,20 +169,31 @@ export default function HotspotModal({
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
             className="relative flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl bg-surface shadow-soft-lg"
           >
-            <div className="relative h-44 shrink-0 sm:h-52">
+            <div className="relative shrink-0">
               {HOTSPOT_PHOTOS[hotspot.id] ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={HOTSPOT_PHOTOS[hotspot.id]}
-                  alt={`${hotspot.name}現場實拍照片`}
-                  className="h-full w-full object-cover"
-                />
+                // 完整呈現整張照片（不裁切）：以該清運點的主題色作為信封底色，
+                // 讓非填滿整個版面比例的照片仍有一致、美觀的留白背景。
+                <div
+                  className="flex max-h-[46vh] items-center justify-center overflow-hidden sm:max-h-[420px]"
+                  style={{
+                    background: `linear-gradient(135deg, ${ACCENT[hotspot.accent].from}, ${ACCENT[hotspot.accent].to})`,
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={HOTSPOT_PHOTOS[hotspot.id]}
+                    alt={`${hotspot.name}現場實拍照片`}
+                    className="max-h-[46vh] w-auto max-w-full object-contain sm:max-h-[420px]"
+                  />
+                </div>
               ) : (
-                <HotspotIllustration hotspot={hotspot} />
+                <div className="h-44 sm:h-52">
+                  <HotspotIllustration hotspot={hotspot} />
+                </div>
               )}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/0"
+                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/40 to-transparent"
               />
               <button
                 type="button"
