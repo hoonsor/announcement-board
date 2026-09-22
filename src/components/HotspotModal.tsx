@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   CalendarClock,
   ClipboardCheck,
+  HeartPulse,
   Phone,
   ShieldAlert,
   Trash2,
@@ -51,6 +52,9 @@ const ACCENT: Record<
 /** 以插畫方式呈現該清運點示意圖（非現場實拍照片，供版面與版型示意使用） */
 function HotspotIllustration({ hotspot }: { hotspot: MapHotspot }) {
   const a = ACCENT[hotspot.accent];
+  if (hotspot.kind === "aed") {
+    return <AedIllustration hotspot={hotspot} />;
+  }
   return (
     <svg viewBox="0 0 400 220" className="h-full w-full">
       <defs>
@@ -102,6 +106,52 @@ function HotspotIllustration({ hotspot }: { hotspot: MapHotspot }) {
       <g transform="translate(220, 158)" opacity="0.9">
         <circle cx="0" cy="0" r="7" fill="#fdfbf6" />
         <path d="M -9 34 C -9 14, 9 14, 9 34 Z" fill="#fdfbf6" />
+      </g>
+    </svg>
+  );
+}
+
+/** AED 示意圖（現場實拍照片尚未拍攝完成前的暫代版面） */
+function AedIllustration({ hotspot }: { hotspot: MapHotspot }) {
+  const a = ACCENT[hotspot.accent];
+  return (
+    <svg viewBox="0 0 400 220" className="h-full w-full">
+      <defs>
+        <linearGradient id={`sky-${hotspot.id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={a.from} />
+          <stop offset="100%" stopColor={a.to} />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="220" fill={`url(#sky-${hotspot.id})`} />
+      <circle cx="40" cy="34" r="60" fill="white" opacity="0.06" />
+      <circle cx="360" cy="190" r="90" fill="white" opacity="0.07" />
+      <circle cx="330" cy="40" r="26" fill="white" opacity="0.1" />
+
+      {/* AED 圖示卡片 */}
+      <g transform="translate(150, 44)">
+        <rect width="100" height="100" rx="16" fill="#fdfbf6" opacity="0.97" />
+        <rect width="100" height="100" rx="16" fill="none" stroke="rgba(16,30,40,0.15)" />
+        <path
+          d="M 50 82 C 16 60, 20 34, 42 30 C 48 29, 50 34, 50 38 C 50 34, 52 29, 58 30 C 80 34, 84 60, 50 82 Z"
+          fill={a.to}
+        />
+        <path d="M 46 40 L 38 54 L 47 54 L 42 68 L 63 48 L 52 48 L 58 40 Z" fill="#fdfbf6" />
+      </g>
+
+      {/* 標示牌 */}
+      <g transform="translate(110, 156)">
+        <rect width="180" height="46" rx="10" fill="#fdfbf6" opacity="0.96" />
+        <rect width="180" height="46" rx="10" fill="none" stroke="rgba(16,30,40,0.15)" />
+        <foreignObject x="8" y="4" width="164" height="38">
+          <div className="flex h-full w-full flex-col items-center justify-center text-center leading-tight">
+            <span className="text-[11px] font-bold text-primary-800">
+              AED 位置示意
+            </span>
+            <span className="mt-0.5 line-clamp-1 text-[10px] font-medium text-primary-600">
+              現場實拍照片拍攝完成後補上
+            </span>
+          </div>
+        </foreignObject>
       </g>
     </svg>
   );
@@ -218,13 +268,24 @@ export default function HotspotModal({
               </h3>
 
               <dl className="mt-4 space-y-3.5 text-sm">
-                <div className="flex items-start gap-3">
-                  <CalendarClock className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
-                  <div>
-                    <dt className="font-semibold text-foreground">清運時段</dt>
-                    <dd className="text-foreground-muted">{hotspot.schedule}</dd>
+                {hotspot.schedule && (
+                  <div className="flex items-start gap-3">
+                    <CalendarClock className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
+                    <div>
+                      <dt className="font-semibold text-foreground">清運時段</dt>
+                      <dd className="text-foreground-muted">{hotspot.schedule}</dd>
+                    </div>
                   </div>
-                </div>
+                )}
+                {hotspot.kind === "aed" && hotspot.zoneLabel && (
+                  <div className="flex items-start gap-3">
+                    <HeartPulse className="mt-0.5 h-4.5 w-4.5 shrink-0 text-danger-500" />
+                    <div>
+                      <dt className="font-semibold text-foreground">位置</dt>
+                      <dd className="text-foreground-muted">{hotspot.zoneLabel}</dd>
+                    </div>
+                  </div>
+                )}
                 {hotspot.method && (
                   <div className="flex items-start gap-3">
                     <ClipboardCheck className="mt-0.5 h-4.5 w-4.5 shrink-0 text-primary-500" />
@@ -260,15 +321,25 @@ export default function HotspotModal({
                   注意事項
                 </div>
                 <ul className="mt-2 space-y-1.5">
-                  {hotspot.notes.map((n, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2 text-xs leading-relaxed text-foreground-muted sm:text-sm"
-                    >
-                      <Trash2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-400" />
-                      <RichText text={n} />
-                    </li>
-                  ))}
+                  {hotspot.notes.map((n, i) =>
+                    hotspot.kind === "aed" ? (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-xs leading-relaxed text-foreground-muted sm:text-sm"
+                      >
+                        <HeartPulse className="mt-0.5 h-3.5 w-3.5 shrink-0 text-danger-500" />
+                        <RichText text={n} />
+                      </li>
+                    ) : (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-xs leading-relaxed text-foreground-muted sm:text-sm"
+                      >
+                        <Trash2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-400" />
+                        <RichText text={n} />
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             </div>

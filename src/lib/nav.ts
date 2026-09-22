@@ -51,8 +51,8 @@ export const navItems: NavItem[] = [
   },
   {
     href: "/waste-collection-points",
-    label: "競賽期間清運點",
-    shortLabel: "清運點地圖",
+    label: "資訊地圖",
+    shortLabel: "資訊地圖",
     description: "互動校園地圖，掌握各清運地點位置與清運時間",
     icon: MapPinned,
   },

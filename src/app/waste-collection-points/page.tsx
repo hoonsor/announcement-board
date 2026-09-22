@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CalendarClock, MapPinned, Recycle, Truck } from "lucide-react";
+import { CalendarClock, HeartPulse, MapPinned, Recycle, Truck } from "lucide-react";
 import CampusMapPhoto from "@/components/CampusMapPhoto";
 import ClientHotspotList from "@/components/HotspotList";
 import { mapHotspots } from "@/data/mapHotspots";
@@ -7,16 +7,19 @@ import { wastePageContent } from "@/data/wastePage";
 import RichText from "@/lib/richText";
 
 export const metadata: Metadata = {
-  title: "競賽期間清運點",
+  title: "資訊地圖",
   description:
-    "115年全國工科技藝競賽競賽期間校內清運點互動地圖，掌握各清運地點位置、清運時段與注意事項。",
+    "115年全國工科技藝競賽競賽期間校內互動地圖，掌握清運地點位置、清運時段、AED 位置與注意事項。",
 };
+
+const wasteHotspots = mapHotspots.filter((h) => h.kind === "waste");
+const aedHotspots = mapHotspots.filter((h) => h.kind === "aed");
 
 const stats = [
   {
     icon: MapPinned,
     label: wastePageContent.stats.pointCountLabel,
-    value: `${mapHotspots.length} 處`,
+    value: `${wasteHotspots.length} 處`,
   },
   {
     icon: CalendarClock,
@@ -84,7 +87,19 @@ export default function Page() {
             <RichText text={wastePageContent.list.description} />
           </p>
 
-          <ClientHotspotList />
+          <ClientHotspotList items={wasteHotspots} />
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-primary-900/8 bg-surface p-5 shadow-soft sm:p-7">
+          <h2 className="flex items-center gap-2 text-base font-bold text-primary-800 sm:text-lg dark:text-primary-100">
+            <HeartPulse className="h-5 w-5 text-danger-500" />
+            {wastePageContent.aedList.title}
+          </h2>
+          <p className="mt-1 text-sm text-foreground-muted">
+            <RichText text={wastePageContent.aedList.description} />
+          </p>
+
+          <ClientHotspotList items={aedHotspots} />
         </div>
 
         <p className="mt-6 text-center text-xs text-foreground-muted">

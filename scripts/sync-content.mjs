@@ -180,6 +180,7 @@ function parseWastePointsFile() {
   const hotspots = [];
   let current = null;
   let inNotes = false;
+  let section = "waste"; // "waste" | "aed" — 由 "## 清運點" / "## AED" 標題切換
 
   for (const raw of lines) {
     const line = raw.trimEnd();
@@ -191,13 +192,16 @@ function parseWastePointsFile() {
       continue;
     }
     if (isHeading(trimmed, 3)) {
-      current = { name: headingText(trimmed, 3), notes: [] };
+      current = { name: headingText(trimmed, 3), notes: [], kind: section };
       hotspots.push(current);
       inNotes = false;
       continue;
     }
     if (isHeading(trimmed, 2)) {
-      // "## 清運點" section marker — nothing to store
+      // "## 清運點" / "## AED" 區塊標題：切換後續項目所屬的種類
+      const h = headingText(trimmed, 2);
+      if (h === "AED") section = "aed";
+      else section = "waste";
       continue;
     }
 
@@ -224,7 +228,7 @@ function parseWastePointsFile() {
             current.y = Number(m[2]);
           }
         } else if (key === "標示顏色") current.accent = value.trim();
-        else if (key === "位置說明") current.zoneLabel = value;
+        else if (key === "位置說明" || key === "位置") current.zoneLabel = value;
         else if (key === "清運時段") current.schedule = value;
         else if (key === "處理方式") current.method = value;
         else if (key === "負責單位") current.owner = value;
@@ -246,6 +250,8 @@ function parseWastePointsFile() {
     else if (key === "統計卡三數值") page.stat3Value = value;
     else if (key === "清單標題") page.listTitle = value;
     else if (key === "清單說明") page.listDescription = value;
+    else if (key === "AED清單標題") page.aedListTitle = value;
+    else if (key === "AED清單說明") page.aedListDescription = value;
     else if (key === "底部備註") page.footnote = value;
   }
 
@@ -259,6 +265,7 @@ function emitHotspots(hotspots) {
       return `  {
     id: ${JSON.stringify(h.id)},
     name: ${JSON.stringify(h.name)},
+    kind: ${JSON.stringify(h.kind ?? "waste")},
     x: ${h.x},
     y: ${h.y},
     zoneLabel: ${JSON.stringify(h.zoneLabel)},
@@ -300,6 +307,10 @@ function emitWastePage(page) {
   list: {
     title: ${JSON.stringify(page.listTitle ?? "")},
     description: ${JSON.stringify(page.listDescription ?? "")},
+  },
+  aedList: {
+    title: ${JSON.stringify(page.aedListTitle ?? "")},
+    description: ${JSON.stringify(page.aedListDescription ?? "")},
   },
   footnote: ${JSON.stringify(page.footnote ?? "")},
 };

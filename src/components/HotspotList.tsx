@@ -12,13 +12,19 @@ const ACCENT_DOT: Record<MapHotspot["accent"], string> = {
   rose: "bg-danger-500",
 };
 
-export default function HotspotList() {
+export default function HotspotList({
+  items,
+}: {
+  /** 要顯示的清單項目；預設顯示全部（清運點＋AED） */
+  items?: MapHotspot[];
+}) {
   const [active, setActive] = useState<MapHotspot | null>(null);
+  const list = items ?? mapHotspots;
 
   return (
     <div>
       <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-        {mapHotspots.map((h) => (
+        {list.map((h) => (
           <li key={h.id}>
             <button
               type="button"

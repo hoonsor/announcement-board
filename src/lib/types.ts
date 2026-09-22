@@ -29,11 +29,13 @@ export interface ChecklistPageData {
 export interface MapHotspot {
   id: string;
   name: string;
-  /** position in the map's SVG coordinate space (viewBox 0 0 1629 2090，對應「AED 分配圖」原始像素座標) */
+  /** "waste" = 垃圾清運點；"aed" = AED 位置 */
+  kind: "waste" | "aed";
+  /** position in the map's pixel coordinate space (對應 public/images/campus-map-base.png 原生像素座標) */
   x: number;
   y: number;
   zoneLabel?: string;
-  schedule: string;
+  schedule?: string;
   method?: string;
   owner?: string;
   contactPhone?: string;
