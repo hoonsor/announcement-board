@@ -28,7 +28,7 @@ const MAP_POSITIONS: Record<string, { x: number; y: number }> = {
   "aed-health-center": { x: 492, y: 1242 },
   "aed-gengdu-1f-restroom": { x: 1186, y: 1438 },
   "aed-pe-center": { x: 821, y: 1021 },
-  "aed-dorm": { x: 1304, y: 95 },
+  "aed-dorm": { x: 1268, y: 70 },
 };
 
 export default function CampusMapPhoto() {
