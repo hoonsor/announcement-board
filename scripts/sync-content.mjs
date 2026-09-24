@@ -487,6 +487,7 @@ function parseHomeFile() {
       else if (key === "說明文字") hero.description = value;
       else if (key === "按鈕一文字") hero.button1 = value;
       else if (key === "按鈕二文字") hero.button2 = value;
+      else if (key === "按鈕三文字") hero.button3 = value;
     } else if (section === "quickNav") {
       if (key === "標題") quickNav.title = value;
       else if (key === "說明") quickNav.description = value;
@@ -520,6 +521,7 @@ function emitHome(data) {
     description: ${JSON.stringify(data.hero.description ?? "")},
     button1: ${JSON.stringify(data.hero.button1 ?? "")},
     button2: ${JSON.stringify(data.hero.button2 ?? "")},
+    button3: ${JSON.stringify(data.hero.button3 ?? "")},
   },
   quickNav: {
     title: ${JSON.stringify(data.quickNav.title ?? "")},
@@ -574,13 +576,23 @@ function parseChangelogFile() {
       const sepIdx = heading.indexOf("｜");
       const date = sepIdx === -1 ? "" : heading.slice(0, sepIdx).trim();
       const title = sepIdx === -1 ? heading : heading.slice(sepIdx + 1).trim();
-      current = { id: `cl-${counter}`, date, title, details: [] };
+      current = { id: `cl-${counter}`, date, title, details: [], highlight: false };
       entries.push(current);
       continue;
     }
 
     if (current && line.startsWith("- ")) {
       current.details.push(line.slice(2).trim());
+      continue;
+    }
+
+    // 標題底下、條列項目之前可加一行 "標籤：注意事項異動"，
+    // 標記這次更新有涉及「注意事項」頁面的內容變更，標題文字會在網站上醒目標示。
+    if (current) {
+      const kv = splitKV(line);
+      if (kv && kv[0] === "標籤" && kv[1].includes("注意事項")) {
+        current.highlight = true;
+      }
     }
   }
 
@@ -598,6 +610,7 @@ function emitChangelog(entries) {
     details: [
 ${detailsCode}
     ],
+    highlight: ${e.highlight ? "true" : "false"},
   },`;
     })
     .join("\n");

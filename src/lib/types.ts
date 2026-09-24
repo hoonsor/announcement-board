@@ -49,4 +49,6 @@ export interface ChangelogEntry {
   date: string;
   title: string;
   details: string[];
+  /** true＝這次更新有涉及「注意事項」頁面的內容變更，標題文字要醒目標示 */
+  highlight?: boolean;
 }

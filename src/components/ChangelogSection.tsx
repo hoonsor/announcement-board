@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, History } from "lucide-react";
+import { AlertTriangle, ChevronDown, History } from "lucide-react";
 import RichText from "@/lib/richText";
 import type { ChangelogEntry } from "@/lib/types";
 
@@ -10,8 +10,10 @@ import type { ChangelogEntry } from "@/lib/types";
  * 每筆紀錄預設收合（僅顯示日期＋標題），點擊最右側的箭頭圖示即可展開／收合
  * 該筆的詳細內容；再點一次箭頭圖示即可收合。最新一筆預設展開，方便一進站
  * 就能看到最近做了什麼調整。
- * 清單本身限制在固定高度內顯示（超出時在右側出現捲軸可拖曳），避免整區
- * 佔掉太多首頁版面。
+ * 清單本身限制在固定高度內顯示（約 4 筆的高度，超出時在右側出現捲軸可
+ * 拖曳瀏覽），避免整區佔掉太多首頁版面，但內容仍完整保留。
+ * 涉及「注意事項」頁面內容變更的紀錄（entry.highlight），標題文字會
+ * 加上醒目底色標示，方便一眼掃到哪些更新動到了注意事項內容。
  */
 export default function ChangelogSection({ entries }: { entries: ChangelogEntry[] }) {
   const [expanded, setExpanded] = useState<Set<string>>(
@@ -30,7 +32,7 @@ export default function ChangelogSection({ entries }: { entries: ChangelogEntry[
   if (entries.length === 0) return null;
 
   return (
-    <section className="bg-surface-muted py-14">
+    <section id="changelog" className="scroll-mt-20 bg-surface-muted py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -47,10 +49,15 @@ export default function ChangelogSection({ entries }: { entries: ChangelogEntry[
         </div>
 
         <p className="mt-3 max-w-3xl text-sm text-foreground-muted">
-          記錄歷次請 Claude 協助更新本網站的內容，方便追蹤網站曾經做過哪些調整。
+          記錄歷次請 Claude 協助更新本網站的內容，方便追蹤網站曾經做過哪些調整。標題以
+          <span className="mx-1 inline-flex items-center gap-1 rounded bg-danger-500/10 px-1.5 py-0.5 text-danger-600 dark:bg-danger-500/25 dark:text-danger-400">
+            <AlertTriangle aria-hidden className="h-3 w-3 shrink-0" />
+            醒目標示
+          </span>
+          者，代表該次更新涉及「注意事項」頁面的內容變更。
         </p>
 
-        <div className="mt-8 max-h-[480px] overflow-y-auto rounded-2xl pr-2">
+        <div className="mt-8 max-h-[284px] overflow-y-auto rounded-2xl pr-2">
           <ol className="space-y-3">
             {entries.map((entry) => {
               const isOpen = expanded.has(entry.id);
@@ -64,7 +71,14 @@ export default function ChangelogSection({ entries }: { entries: ChangelogEntry[
                       {entry.date}
                     </span>
                     <span className="flex-1 min-w-0 text-sm font-bold text-foreground">
-                      {entry.title}
+                      {entry.highlight ? (
+                        <span className="inline-flex items-center gap-1 rounded bg-danger-500/10 px-1.5 py-0.5 text-danger-600 dark:bg-danger-500/25 dark:text-danger-400">
+                          <AlertTriangle aria-hidden className="h-3.5 w-3.5 shrink-0" />
+                          {entry.title}
+                        </span>
+                      ) : (
+                        entry.title
+                      )}
                     </span>
                     <button
                       type="button"

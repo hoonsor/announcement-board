@@ -4,6 +4,7 @@ import {
   CalendarCheck2,
   ClipboardCheck,
   HardHat,
+  History,
   MapPinned,
   Megaphone,
   Printer,
@@ -62,11 +63,18 @@ export default function Home() {
               {homeContent.hero.button1}
               <ArrowRight className="h-4 w-4" />
             </Link>
+            <a
+              href="#changelog"
+              className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition-transform hover:-translate-y-0.5 hover:bg-white/20"
+            >
+              {homeContent.hero.button2}
+              <History className="h-4 w-4" />
+            </a>
             <Link
               href="/waste-collection-points"
               className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition-transform hover:-translate-y-0.5 hover:bg-white/20"
             >
-              {homeContent.hero.button2}
+              {homeContent.hero.button3}
               <MapPinned className="h-4 w-4" />
             </Link>
           </div>
