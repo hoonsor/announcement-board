@@ -9,6 +9,16 @@ export const changelogEntries: ChangelogEntry[] = [
   {
     id: "cl-1",
     date: "2026-09-24",
+    title: "調整版本更新紀錄區塊的位置與操作方式",
+    details: [
+      "將「版本更新紀錄」區塊從首頁最下方移到「五大公告專區」上方，一進站就能先看到。",
+      "清單改為限制在固定高度內顯示，超出時在區塊右側出現捲軸可拖曳瀏覽，避免佔掉太多首頁版面。",
+      "展開／收合的操作方式由「雙擊標題列」改為「單擊每筆紀錄最右側的箭頭圖示」，點擊標題文字本身不會觸發。",
+    ],
+  },
+  {
+    id: "cl-2",
+    date: "2026-09-24",
     title: "首頁新增「版本更新紀錄」區塊",
     details: [
       "新增本區塊本身：在首頁加入可展開／收合的更新紀錄列表，記錄歷次請 Claude 協助更新網站的內容。",
@@ -17,7 +27,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-2",
+    id: "cl-3",
     date: "2026-09-22",
     title: "同步網站內容：新增急救箱採購提醒、強化協辦單位便當說明",
     details: [
@@ -26,7 +36,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-3",
+    id: "cl-4",
     date: "2026-09-22",
     title: "再次微調 AED 圖示位置：移到方格左上角",
     details: [
@@ -35,7 +45,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-4",
+    id: "cl-5",
     date: "2026-09-22",
     title: "微調 AED 圖示位置：對齊桃園學苑建築物",
     details: [
@@ -44,7 +54,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-5",
+    id: "cl-6",
     date: "2026-09-22",
     title: "資訊地圖更名、新增 AED 功能、同步各頁最新內容",
     details: [
@@ -56,7 +66,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-6",
+    id: "cl-7",
     date: "2026-09-21",
     title: "修正清運點浮動卡片圖片顯示方式",
     details: [
@@ -65,7 +75,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-7",
+    id: "cl-8",
     date: "2026-09-21",
     title: "網站內容大更新：Markdown 樣式支援、最後更新時間自動化、清運點擴充",
     details: [
@@ -77,7 +87,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-8",
+    id: "cl-9",
     date: "2026-09-21",
     title: "依參考標示圖重建互動地圖清運點座標",
     details: [
@@ -85,7 +95,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-9",
+    id: "cl-10",
     date: "2026-09-18",
     title: "依 AED 配置參考圖重繪校內地圖底圖",
     details: [
@@ -93,7 +103,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-10",
+    id: "cl-11",
     date: "2026-09-18",
     title: "新增淺色／深色／跟隨系統主題切換",
     details: [
@@ -101,7 +111,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-11",
+    id: "cl-12",
     date: "2026-09-18",
     title: "同步內容更新：工作組檢核清單、首頁與導覽文案",
     details: [
@@ -109,7 +119,7 @@ export const changelogEntries: ChangelogEntry[] = [
     ],
   },
   {
-    id: "cl-12",
+    id: "cl-13",
     date: "2026-09-17",
     title: "網站初版建置上線",
     details: [

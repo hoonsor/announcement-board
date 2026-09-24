@@ -73,6 +73,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ---------- Changelog ---------- */}
+      <ChangelogSection entries={changelogEntries} />
+
       {/* ---------- Quick nav cards ---------- */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4">
@@ -204,9 +207,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ---------- Changelog ---------- */}
-      <ChangelogSection entries={changelogEntries} />
     </div>
   );
 }
