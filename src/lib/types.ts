@@ -42,3 +42,11 @@ export interface MapHotspot {
   notes: string[];
   accent: "teal" | "amber" | "rose";
 }
+
+export interface ChangelogEntry {
+  id: string;
+  /** 更新日期，例如 "2026-09-22" */
+  date: string;
+  title: string;
+  details: string[];
+}

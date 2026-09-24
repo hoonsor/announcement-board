@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { navItems } from "@/lib/nav";
 import { homeContent } from "@/data/home";
+import { changelogEntries } from "@/data/changelog";
+import ChangelogSection from "@/components/ChangelogSection";
 
 const workScopeIcons = [Megaphone, ClipboardCheck, MapPinned, ShieldCheck];
 
@@ -202,6 +204,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ---------- Changelog ---------- */}
+      <ChangelogSection entries={changelogEntries} />
     </div>
   );
 }

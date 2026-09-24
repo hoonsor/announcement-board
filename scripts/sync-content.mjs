@@ -549,6 +549,70 @@ ${timelineCode}
 }
 
 // ---------------------------------------------------------------------------
+// 5. 版本更新紀錄 (content/changelog.md -> src/data/changelog.ts)
+// ---------------------------------------------------------------------------
+//
+// 每個 "### YYYY-MM-DD｜標題" 三級標題視為一筆紀錄，日期與標題以「｜」分隔；
+// 標題底下緊接的 "- " 條列項目視為該筆紀錄的詳細內容，直到下一個標題為止。
+// 檔案內文字順序＝網站顯示順序，建議由新到舊排列（最新的更新放最上面）。
+
+function parseChangelogFile() {
+  const lines = readLines("changelog.md");
+  const entries = [];
+  let current = null;
+  let counter = 0;
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (isHeading(line, 1)) continue; // 頁面標題，目前未使用
+    if (line.startsWith("⚠️")) continue; // 檔案開頭的維護說明，不顯示在網站上
+
+    if (isHeading(line, 3)) {
+      counter += 1;
+      const heading = headingText(line, 3);
+      const sepIdx = heading.indexOf("｜");
+      const date = sepIdx === -1 ? "" : heading.slice(0, sepIdx).trim();
+      const title = sepIdx === -1 ? heading : heading.slice(sepIdx + 1).trim();
+      current = { id: `cl-${counter}`, date, title, details: [] };
+      entries.push(current);
+      continue;
+    }
+
+    if (current && line.startsWith("- ")) {
+      current.details.push(line.slice(2).trim());
+    }
+  }
+
+  return entries;
+}
+
+function emitChangelog(entries) {
+  const itemsCode = entries
+    .map((e) => {
+      const detailsCode = e.details.map((d) => `      ${JSON.stringify(d)},`).join("\n");
+      return `  {
+    id: ${JSON.stringify(e.id)},
+    date: ${JSON.stringify(e.date)},
+    title: ${JSON.stringify(e.title)},
+    details: [
+${detailsCode}
+    ],
+  },`;
+    })
+    .join("\n");
+
+  const out = `${GENERATED_BANNER(["content/changelog.md"])}import { ChangelogEntry } from "@/lib/types";
+
+export const changelogEntries: ChangelogEntry[] = [
+${itemsCode}
+];
+`;
+  writeFileSync(join(ROOT, "src/data/changelog.ts"), out, "utf-8");
+  console.log("✓ src/data/changelog.ts 已更新");
+}
+
+// ---------------------------------------------------------------------------
 // 執行
 // ---------------------------------------------------------------------------
 
@@ -566,5 +630,8 @@ emitSite(brand, footer);
 
 const home = parseHomeFile();
 emitHome(home);
+
+const changelog = parseChangelogFile();
+emitChangelog(changelog);
 
 console.log("\n全部內容同步完成！接著可執行 npm run build 確認網站正常。");
