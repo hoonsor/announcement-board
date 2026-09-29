@@ -49,7 +49,7 @@ export default function ChangelogSection({ entries }: { entries: ChangelogEntry[
         </div>
 
         <p className="mt-3 max-w-3xl text-sm text-foreground-muted">
-          記錄歷次請 Claude 協助更新本網站的內容，方便追蹤網站曾經做過哪些調整。標題以
+          記錄歷次更新本網站的內容，方便追蹤網站曾經做過哪些調整。標題以
           <span className="mx-1 inline-flex items-center gap-1 rounded bg-danger-500/10 px-1.5 py-0.5 text-danger-600 dark:bg-danger-500/25 dark:text-danger-400">
             <AlertTriangle aria-hidden className="h-3 w-3 shrink-0" />
             醒目標示
