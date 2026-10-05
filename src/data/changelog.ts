@@ -8,6 +8,16 @@ import { ChangelogEntry } from "@/lib/types";
 export const changelogEntries: ChangelogEntry[] = [
   {
     id: "cl-1",
+    date: "2026-10-05",
+    title: "同步四份注意事項最新內容、修正「最後更新」日期邏輯",
+    details: [
+      "同步使用者修正後的 4 份「注意事項」內容：工作組、競賽職種（校內）、協辦單位、外派聯絡人，涵蓋便當數量核實來源說明、急救箱配備連結與採購期限（10/16 前）、回收物分類提醒、電梯磁扣借用提示等多處文字調整。",
+      "修正各「注意事項」頁面 header「最後更新：」欄位：原本會抓取網站「每次重新部署」的建置時間，即使該次調整與注意事項內容無關也會跳動；改為抓取版本更新紀錄中最新一筆標記「標籤：注意事項異動」的日期，只有真的異動到注意事項內容時才會更新。",
+    ],
+    highlight: true,
+  },
+  {
+    id: "cl-2",
     date: "2026-09-29",
     title: "調整版本更新紀錄區塊上方說明文字",
     details: [
@@ -16,7 +26,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-2",
+    id: "cl-3",
     date: "2026-09-24",
     title: "限縮版本更新紀錄顯示高度、標題醒目標示、首頁新增捷徑按鈕",
     details: [
@@ -27,7 +37,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-3",
+    id: "cl-4",
     date: "2026-09-24",
     title: "調整版本更新紀錄區塊的位置與操作方式",
     details: [
@@ -38,7 +48,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-4",
+    id: "cl-5",
     date: "2026-09-24",
     title: "首頁新增「版本更新紀錄」區塊",
     details: [
@@ -49,7 +59,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-5",
+    id: "cl-6",
     date: "2026-09-22",
     title: "同步網站內容：新增急救箱採購提醒、強化協辦單位便當說明",
     details: [
@@ -59,7 +69,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-6",
+    id: "cl-7",
     date: "2026-09-22",
     title: "再次微調 AED 圖示位置：移到方格左上角",
     details: [
@@ -69,7 +79,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-7",
+    id: "cl-8",
     date: "2026-09-22",
     title: "微調 AED 圖示位置：對齊桃園學苑建築物",
     details: [
@@ -79,7 +89,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-8",
+    id: "cl-9",
     date: "2026-09-22",
     title: "資訊地圖更名、新增 AED 功能、同步各頁最新內容",
     details: [
@@ -92,7 +102,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-9",
+    id: "cl-10",
     date: "2026-09-21",
     title: "修正清運點浮動卡片圖片顯示方式",
     details: [
@@ -102,7 +112,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-10",
+    id: "cl-11",
     date: "2026-09-21",
     title: "網站內容大更新：Markdown 樣式支援、最後更新時間自動化、清運點擴充",
     details: [
@@ -115,7 +125,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-11",
+    id: "cl-12",
     date: "2026-09-21",
     title: "依參考標示圖重建互動地圖清運點座標",
     details: [
@@ -124,7 +134,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-12",
+    id: "cl-13",
     date: "2026-09-18",
     title: "依 AED 配置參考圖重繪校內地圖底圖",
     details: [
@@ -133,7 +143,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-13",
+    id: "cl-14",
     date: "2026-09-18",
     title: "新增淺色／深色／跟隨系統主題切換",
     details: [
@@ -142,7 +152,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-14",
+    id: "cl-15",
     date: "2026-09-18",
     title: "同步內容更新：工作組檢核清單、首頁與導覽文案",
     details: [
@@ -151,7 +161,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-15",
+    id: "cl-16",
     date: "2026-09-17",
     title: "網站初版建置上線",
     details: [
@@ -161,3 +171,15 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
 ];
+
+/**
+ * 各「...注意事項」頁面（工作組／競賽職種／協辦單位／外派聯絡人）header 上
+ * 「最後更新：」欄位所顯示的日期。
+ *
+ * 取自版本更新紀錄中，最新一筆標記「標籤：注意事項異動」的紀錄日期——而不是
+ * 網站每次重新部署建置的當下時間。這樣即使網站因為外觀、功能等與「注意事項」
+ * 頁面內容無關的調整而重新部署，這個日期也不會被誤改成「今天」；只有真的
+ * 修改了注意事項頁面內容（並在 changelog.md 該筆紀錄加上「標籤：注意事項異動」）
+ * 才會跟著更新。
+ */
+export const latestChecklistUpdateDate: string = "2026-10-05";

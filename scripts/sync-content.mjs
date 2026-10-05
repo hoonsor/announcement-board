@@ -615,11 +615,28 @@ ${detailsCode}
     })
     .join("\n");
 
+  // entries 由檔案由上到下依序產生，而 changelog.md 的慣例是「最新的紀錄寫在最上面」，
+  // 所以陣列中第一筆標記 highlight 的紀錄，就是「注意事項」頁面最近一次內容異動的日期。
+  const latestChecklistUpdate = entries.find((e) => e.highlight);
+  const latestChecklistUpdateDate = latestChecklistUpdate ? latestChecklistUpdate.date : "";
+
   const out = `${GENERATED_BANNER(["content/changelog.md"])}import { ChangelogEntry } from "@/lib/types";
 
 export const changelogEntries: ChangelogEntry[] = [
 ${itemsCode}
 ];
+
+/**
+ * 各「...注意事項」頁面（工作組／競賽職種／協辦單位／外派聯絡人）header 上
+ * 「最後更新：」欄位所顯示的日期。
+ *
+ * 取自版本更新紀錄中，最新一筆標記「標籤：注意事項異動」的紀錄日期——而不是
+ * 網站每次重新部署建置的當下時間。這樣即使網站因為外觀、功能等與「注意事項」
+ * 頁面內容無關的調整而重新部署，這個日期也不會被誤改成「今天」；只有真的
+ * 修改了注意事項頁面內容（並在 changelog.md 該筆紀錄加上「標籤：注意事項異動」）
+ * 才會跟著更新。
+ */
+export const latestChecklistUpdateDate: string = ${JSON.stringify(latestChecklistUpdateDate)};
 `;
   writeFileSync(join(ROOT, "src/data/changelog.ts"), out, "utf-8");
   console.log("✓ src/data/changelog.ts 已更新");
