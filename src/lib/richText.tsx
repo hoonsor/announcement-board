@@ -12,6 +12,31 @@ import type { ReactNode } from "react";
 const INLINE_PATTERN_SOURCE =
   "\\[([^\\]]+)\\]\\(([^)\\s]+)\\)|\\*\\*([\\s\\S]+?)\\*\\*|<u>([\\s\\S]+?)<\\/u>|==([\\s\\S]+?)==";
 
+/**
+ * 比照 Obsidian 的燈號螢光標示習慣：==文字== 如果一開頭是色圈燈號表情符號，
+ * 高亮底色就換成對應的顏色，燈號本身仍會跟著文字一起顯示；沒有燈號則維持
+ * 預設的 accent 色（跟之前的行為一樣）。
+ */
+const HIGHLIGHT_TONE_CLASSES: Record<string, string> = {
+  "🔴": "bg-red-200/70 dark:bg-red-400/30",
+  "🟠": "bg-orange-200/70 dark:bg-orange-400/30",
+  "🟡": "bg-yellow-200/70 dark:bg-yellow-400/30",
+  "🟢": "bg-green-200/70 dark:bg-green-400/30",
+  "🔵": "bg-blue-200/70 dark:bg-blue-400/30",
+  "🟣": "bg-purple-200/70 dark:bg-purple-400/30",
+  "🟤": "bg-amber-800/25 dark:bg-amber-700/35",
+  "⚫": "bg-neutral-400/45 dark:bg-neutral-500/45",
+  "⚪": "bg-neutral-200/80 ring-1 ring-inset ring-neutral-300/70 dark:bg-neutral-600/40 dark:ring-neutral-500/60",
+};
+const DEFAULT_HIGHLIGHT_TONE = "bg-accent-200/70 dark:bg-accent-400/30";
+
+function highlightToneClass(innerText: string): string {
+  for (const [emoji, cls] of Object.entries(HIGHLIGHT_TONE_CLASSES)) {
+    if (innerText.startsWith(emoji)) return cls;
+  }
+  return DEFAULT_HIGHLIGHT_TONE;
+}
+
 function parseInline(text: string, keyPrefix: string, depth = 0): ReactNode[] {
   if (!text) return [];
   // 巢狀格式最多處理 4 層，避免不正常輸入造成無窮遞迴
@@ -57,11 +82,11 @@ function parseInline(text: string, keyPrefix: string, depth = 0): ReactNode[] {
         </u>
       );
     } else if (match[5] !== undefined) {
-      // ==highlight==
+      // ==highlight==（開頭有色圈燈號時換成對應顏色）
       nodes.push(
         <mark
           key={key}
-          className="rounded bg-accent-200/70 px-1 py-0.5 text-foreground dark:bg-accent-400/30 dark:text-foreground"
+          className={`rounded px-1 py-0.5 text-foreground dark:text-foreground ${highlightToneClass(match[5])}`}
         >
           {parseInline(match[5], key, depth + 1)}
         </mark>
