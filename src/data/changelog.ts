@@ -9,6 +9,19 @@ export const changelogEntries: ChangelogEntry[] = [
   {
     id: "cl-1",
     date: "2026-11-22",
+    title: "再次同步修正：競賽職種便當填報、垃圾設備設置期限、晚餐填報規則更新",
+    details: [
+      "便當填報表單數量確認文字調整為：已關閉填報權限並產製相關表單，如有異動請及早填寫「緊急新增之便當需求表」並送交服務組。",
+      "垃圾回收架、廚餘桶設置期限由「11/16 前」改為「11/23 當日設置完成」。",
+      "借傘提醒文字微調為「目前已確認競賽期間會下雨」。",
+      "晚餐便當填報規則更新：新增「11/24 或 11/26 將有工作超過晚上6點之情形」適用範圍說明（11/25 便當已於群組公告提前開放填寫；11/24 有晚宴，未協助晚宴而留校同仁才需填列），並調整工讀生便當填報之排除說明文字。",
+      "移除末尾「...（其餘事項待後續補充修正）」之暫擬文字。",
+    ],
+    highlight: true,
+  },
+  {
+    id: "cl-2",
+    date: "2026-11-22",
     title: "同步外派聯絡人、工作組最新修正內容",
     details: [
       "外派聯絡人：移除原本「請於事前確認便當葷素數量」及「與協辦單位確認有無其他需事前準備之事項」等舊文字；新增協辦單位 11/25 命題評判委員晚餐經費說明與需攜帶預借經費之各協辦單位名單明細（萬能科大、桃竹苗分署、新興高中、泰山高中）。",
@@ -17,7 +30,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-2",
+    id: "cl-3",
     date: "2026-11-08",
     title: "再次同步修正：競賽職種晚餐便當填報文字微調、工作組新增同一規則",
     details: [
@@ -28,7 +41,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-3",
+    id: "cl-4",
     date: "2026-11-08",
     title: "螢光標示（==文字==）支援燈號顏色，比照 Obsidian 呈現方式",
     details: [
@@ -38,7 +51,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-4",
+    id: "cl-5",
     date: "2026-11-08",
     title: "同步四份注意事項最新內容：便當發放流程、服務禮儀手冊、緊急加訂表單等更新",
     details: [
@@ -52,7 +65,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-5",
+    id: "cl-6",
     date: "2026-10-05",
     title: "同步四份注意事項最新內容、修正「最後更新」日期邏輯",
     details: [
@@ -62,7 +75,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-6",
+    id: "cl-7",
     date: "2026-09-29",
     title: "調整版本更新紀錄區塊上方說明文字",
     details: [
@@ -71,7 +84,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-7",
+    id: "cl-8",
     date: "2026-09-24",
     title: "限縮版本更新紀錄顯示高度、標題醒目標示、首頁新增捷徑按鈕",
     details: [
@@ -82,7 +95,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-8",
+    id: "cl-9",
     date: "2026-09-24",
     title: "調整版本更新紀錄區塊的位置與操作方式",
     details: [
@@ -93,7 +106,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-9",
+    id: "cl-10",
     date: "2026-09-24",
     title: "首頁新增「版本更新紀錄」區塊",
     details: [
@@ -104,7 +117,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-10",
+    id: "cl-11",
     date: "2026-09-22",
     title: "同步網站內容：新增急救箱採購提醒、強化協辦單位便當說明",
     details: [
@@ -114,7 +127,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-11",
+    id: "cl-12",
     date: "2026-09-22",
     title: "再次微調 AED 圖示位置：移到方格左上角",
     details: [
@@ -124,7 +137,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-12",
+    id: "cl-13",
     date: "2026-09-22",
     title: "微調 AED 圖示位置：對齊桃園學苑建築物",
     details: [
@@ -134,7 +147,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-13",
+    id: "cl-14",
     date: "2026-09-22",
     title: "資訊地圖更名、新增 AED 功能、同步各頁最新內容",
     details: [
@@ -147,7 +160,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-14",
+    id: "cl-15",
     date: "2026-09-21",
     title: "修正清運點浮動卡片圖片顯示方式",
     details: [
@@ -157,7 +170,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-15",
+    id: "cl-16",
     date: "2026-09-21",
     title: "網站內容大更新：Markdown 樣式支援、最後更新時間自動化、清運點擴充",
     details: [
@@ -170,7 +183,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-16",
+    id: "cl-17",
     date: "2026-09-21",
     title: "依參考標示圖重建互動地圖清運點座標",
     details: [
@@ -179,7 +192,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-17",
+    id: "cl-18",
     date: "2026-09-18",
     title: "依 AED 配置參考圖重繪校內地圖底圖",
     details: [
@@ -188,7 +201,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-18",
+    id: "cl-19",
     date: "2026-09-18",
     title: "新增淺色／深色／跟隨系統主題切換",
     details: [
@@ -197,7 +210,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: false,
   },
   {
-    id: "cl-19",
+    id: "cl-20",
     date: "2026-09-18",
     title: "同步內容更新：工作組檢核清單、首頁與導覽文案",
     details: [
@@ -206,7 +219,7 @@ export const changelogEntries: ChangelogEntry[] = [
     highlight: true,
   },
   {
-    id: "cl-20",
+    id: "cl-21",
     date: "2026-09-17",
     title: "網站初版建置上線",
     details: [
